@@ -19,9 +19,7 @@
         <v-text-field v-model="userMessage" label="Mensaje" @keyup.enter="sendMessage" class="fill-width"></v-text-field>
         <v-btn @click="sendMessage" class="send-button">Enviar</v-btn>
       </v-container>
-
     </v-main>
-
     <AppFooter />
   </v-app>
 </template>

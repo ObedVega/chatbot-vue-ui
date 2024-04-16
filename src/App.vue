@@ -10,17 +10,18 @@
     </v-app-bar>
 
     <v-main>
-      <v-container v-show="messages.length > 0" class="chatbot">
+      <v-container v-show=true class="fill-width chatbot">
         <div v-for="message in messages" :key="message.id" :class="{ 'sent': message.sender === 'user', 'received': message.sender === 'bot' }">
           {{ message.text }}
         </div>
       </v-container>
-      <v-container>
-        <v-text-field v-model="userMessage" label="Mensaje" @keyup.enter="sendMessage" class="fill-width"></v-text-field>
+      
+      <v-container class="fill-width">
+        <v-text-field v-model="userMessage" label="Mensaje" @keyup.enter="sendMessage"></v-text-field>
         <v-btn @click="sendMessage" class="send-button">Enviar</v-btn>
       </v-container>
     </v-main>
-    <AppFooter />
+     
   </v-app>
 </template>
 
@@ -67,17 +68,17 @@ export default {
   padding: 20px;
   margin-top: 10px;
   height: 500px;
+  margin-bottom: 20px; /* Añade margen inferior al primer contenedor */
 }
 
 .fill-width {
-  width: calc(100% - 64px); 
+  width: calc(100% - 64px); /* Ten en cuenta el padding del primer contenedor */
   margin-right: auto;
   margin-left: auto;
 }
 
 .send-button {
   margin-top: 10px;  
-  margin-left: 20px;  
 }
 
 .sent {

@@ -10,7 +10,7 @@
       <v-app-bar-title>Application</v-app-bar-title>
     </v-app-bar>
     <v-main>
-       tets
+        
     </v-main>
 
     <AppFooter />

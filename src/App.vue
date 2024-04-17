@@ -14,11 +14,14 @@
         <div class="message" v-for="message in messages" :key="message.id" :class="{ 'sent': message.sender === 'user', 'received': message.sender === 'bot' }">
           {{ message.text }}
         </div>
+        <template v-if="loading">
+          <v-progress-circular color="dark-blue" indeterminate></v-progress-circular>
+          </template>
       </v-container>
-      
+            
       <v-container class="fill-width">
         <v-text-field v-model="userMessage" label="Mensaje" @keyup.enter="sendMessage"></v-text-field>
-        <v-btn @click="sendMessage" class="send-button">Enviar</v-btn>
+        <v-btn @click="sendMessage" class="send-button" :disabled="!userMessage.trim()">Enviar</v-btn>
       </v-container>
     </v-main>
      
@@ -27,8 +30,9 @@
 
 <script setup>
   import { ref, onMounted   } from 'vue'
-  import axios from 'axios'
+  import axios from 'axios'   
   const drawer = ref(null)
+  
 </script>
 
 <script>
@@ -37,11 +41,13 @@ export default {
     return {
       drawer: null,
       messages: [],
-      userMessage: ''
+      userMessage: '',
+      loading: false
     };
   },
   methods: {
     sendMessage() {
+      this.loading = true;
       console.log('Mensaje enviado:', this.userMessage);
       // Agregar el mensaje del usuario al historial de mensajes
       this.messages.push({ id: this.messages.length + 1, text: this.userMessage, sender: 'user' });
@@ -62,9 +68,11 @@ export default {
         })
         .catch(error => {
           console.error('Error al llamar a la API del chatbot:', error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.userMessage = '';
         });
-
-        this.userMessage = '';
     },
     generateBotResponse() {
       const responses = ['¡Hola! Soy un chatbot.', 'Gracias por tu mensaje.', '¿En qué puedo ayudarte?'];

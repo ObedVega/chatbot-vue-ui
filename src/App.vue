@@ -26,8 +26,8 @@
 </template>
 
 <script setup>
-  import { ref, watchEffect  } from 'vue'
-
+  import { ref, onMounted   } from 'vue'
+  import axios from 'axios'
   const drawer = ref(null)
 </script>
 
@@ -42,17 +42,31 @@ export default {
   },
   methods: {
     sendMessage() {
+      console.log('Mensaje enviado:', this.userMessage);
       // Agregar el mensaje del usuario al historial de mensajes
       this.messages.push({ id: this.messages.length + 1, text: this.userMessage, sender: 'user' });
-      // Limpiar el campo de entrada después de enviar el mensaje
-      this.userMessage = '';
+
       
+       
       // Simular una respuesta del chatbot
-      const botResponse = this.generateBotResponse();
-      this.messages.push({ id: this.messages.length + 1, text: botResponse, sender: 'bot' });
+      // const botResponse = this.generateBotResponse();
+      // this.messages.push({ id: this.messages.length + 1, text: botResponse, sender: 'bot' });
+      axios.get(`https://mywedding-backend.onrender.com/boda/${this.userMessage}`)
+        .then(response => {
+          console.log(response.data.palabras);
+          // Agregar la respuesta del chatbot al historial de mensajes
+          const botResponse = response.data.palabras;
+          this.messages.push({ id: this.messages.length + 1, text: botResponse, sender: 'bot' });
+          // Desplazar hacia abajo el contenedor de mensajes
+        //  this.scrollToBottom();
+        })
+        .catch(error => {
+          console.error('Error al llamar a la API del chatbot:', error);
+        });
+
+        this.userMessage = '';
     },
     generateBotResponse() {
-      // Aquí puedes implementar la lógica para generar una respuesta aleatoria del chatbot
       const responses = ['¡Hola! Soy un chatbot.', 'Gracias por tu mensaje.', '¿En qué puedo ayudarte?'];
       const randomIndex = Math.floor(Math.random() * responses.length);
       return responses[randomIndex];

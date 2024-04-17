@@ -37,6 +37,11 @@
 
 <script>
 export default {
+  mounted() {
+    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    const welcomeMessage = "Hello, I'm your Teradata Quickstart Assistant.";
+    this.messages.push({ id: 1, text: welcomeMessage, sender: 'bot' });
+  },
   data() {
     return {
       drawer: null,
@@ -57,11 +62,12 @@ export default {
       // Simular una respuesta del chatbot
       // const botResponse = this.generateBotResponse();
       // this.messages.push({ id: this.messages.length + 1, text: botResponse, sender: 'bot' });
-      axios.get(`https://mywedding-backend.onrender.com/boda/${this.userMessage}`)
+      //axios.get(`https://mywedding-backend.onrender.com/boda/${this.userMessage}`)
+      axios.post(`http://localhost:3978/api/conversation`, { message: this.userMessage })
         .then(response => {
-          console.log(response.data.palabras);
+          console.log("Response: ",response.data);
           // Agregar la respuesta del chatbot al historial de mensajes
-          const botResponse = response.data.palabras;
+          const botResponse = response.data.message;
           this.messages.push({ id: this.messages.length + 1, text: botResponse, sender: 'bot' });
           // Desplazar hacia abajo el contenedor de mensajes
         //  this.scrollToBottom();

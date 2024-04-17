@@ -11,7 +11,7 @@
 
     <v-main>
       <v-container v-show=true class="fill-width chatbot">
-        <div v-for="message in messages" :key="message.id" :class="{ 'sent': message.sender === 'user', 'received': message.sender === 'bot' }">
+        <div class="message" v-for="message in messages" :key="message.id" :class="{ 'sent': message.sender === 'user', 'received': message.sender === 'bot' }">
           {{ message.text }}
         </div>
       </v-container>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue'
+  import { ref, watchEffect  } from 'vue'
 
   const drawer = ref(null)
 </script>
@@ -68,11 +68,12 @@ export default {
   padding: 20px;
   margin-top: 10px;
   height: 500px;
-  margin-bottom: 20px; /* Añade margen inferior al primer contenedor */
+  margin-bottom: 20px;  
+  overflow-y: auto;
 }
 
 .fill-width {
-  width: calc(100% - 64px); /* Ten en cuenta el padding del primer contenedor */
+  width: calc(100% - 64px); 
   margin-right: auto;
   margin-left: auto;
 }
@@ -81,11 +82,25 @@ export default {
   margin-top: 10px;  
 }
 
+.message {
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 70%; 
+  word-wrap: break-word;  
+}
+
 .sent {
+  background-color: #4CAF50;  
+  color: white;
   text-align: right;
+  margin-left: auto;
+  margin-bottom: 15px;
 }
 
 .received {
+  background-color: #2196F3;
+  color: white;
   text-align: left;
+  margin-bottom: 15px;
 }
 </style>

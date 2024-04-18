@@ -82,9 +82,10 @@ export default {
         });
     },
     formatMessageText(text) {
-      // Inserta un salto de línea antes de la palabra "reference"
-      const formattedText = text.replace(/\. reference/g, '.<br>reference');
-      return formattedText;
+      let formattedText = text.replace(/\. /g, '.<br><br>');
+      formattedText = formattedText.replace(/(Reference)/g, '<br>$1');
+
+      return `<div class="box">${formattedText}</div>`;
     }
   }
 };
@@ -149,5 +150,11 @@ export default {
 }
 .text-b{
   background-color: transparent !important;
+}
+
+.box {
+  border-radius: 8px;
+  border: 1px solid black;
+  padding: 10px;
 }
 </style>

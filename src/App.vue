@@ -6,7 +6,7 @@
 
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>ChatBot</v-app-bar-title>
+      <v-app-bar-title>Teradata QuickStart ChatBot</v-app-bar-title>
     </v-app-bar>
 
     <v-main>

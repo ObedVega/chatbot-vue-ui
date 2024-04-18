@@ -12,16 +12,17 @@
     <v-main>
       <v-container v-show=true class="fill-width chatbot">
         <div class="message" v-for="message in messages" :key="message.id" :class="{ 'sent': message.sender === 'user', 'received': message.sender === 'bot' }">
-          {{ message.text }}
+        
+          <div v-html="formatMessageText(message.text)"></div>
         </div>
         <template v-if="loading">
           <v-progress-circular color="dark-blue" indeterminate></v-progress-circular>
           </template>
       </v-container>
             
-      <v-container class="fill-width">
-        <v-text-field v-model="userMessage" label="Mensaje" @keyup.enter="sendMessage"></v-text-field>
-        <v-btn @click="sendMessage" class="send-button" :disabled="!userMessage.trim()">Enviar</v-btn>
+      <v-container class="fill-width d-flex align-center">
+        <v-text-field variant="outlined" class="text-b" v-model="userMessage" label="Ask a question" @keyup.enter="sendMessage"></v-text-field>
+        <v-btn variant="plain"  @click="sendMessage" class="send-button" :disabled="!userMessage.trim()">Submit</v-btn>
       </v-container>
     </v-main>
      
@@ -80,24 +81,28 @@ export default {
           this.userMessage = '';
         });
     },
-    generateBotResponse() {
-      const responses = ['¡Hola! Soy un chatbot.', 'Gracias por tu mensaje.', '¿En qué puedo ayudarte?'];
-      const randomIndex = Math.floor(Math.random() * responses.length);
-      return responses[randomIndex];
+    formatMessageText(text) {
+      // Inserta un salto de línea antes de la palabra "reference"
+      const formattedText = text.replace(/\. reference/g, '.<br>reference');
+      return formattedText;
     }
   }
 };
 </script>
 
 <style scoped>
+.text-format {
+  font-size: 16px;
+  line-height: 1.5;
+}
 .chatbot {
-  background-color: #f0f0f0;
+  background-color: #FFFFFF;
   border-radius: 8px;
   padding: 20px;
   margin-top: 10px;
-  height: 500px;
+  height: auto;
   margin-bottom: 20px;  
-  overflow-y: auto;
+/*  overflow-y: auto; */
 }
 
 .fill-width {
@@ -107,28 +112,42 @@ export default {
 }
 
 .send-button {
-  margin-top: 10px;  
+  /*border: none;
+  background-color: transparent;
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;*/
+  color: #3053F4 !important;
+  text-transform: none;
 }
 
 .message {
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
   max-width: 70%; 
   word-wrap: break-word;  
+  gap: 16px;
 }
 
 .sent {
-  background-color: #4CAF50;  
-  color: white;
+  background-color: #f0f0f0;  
+  color: #000000;
   text-align: right;
   margin-left: auto;
   margin-bottom: 15px;
 }
 
 .received {
-  background-color: #2196F3;
+  background-color: #3053F4;
   color: white;
   text-align: left;
   margin-bottom: 15px;
+}
+.box{
+  border-radius: 8px;
+  border: 1px solid rgb(172, 166, 166);
+}
+.text-b{
+  background-color: transparent !important;
 }
 </style>
